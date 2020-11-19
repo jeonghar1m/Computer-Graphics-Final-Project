@@ -161,7 +161,7 @@ void Bullet::active()
 
 void Bullet::move()
 {
-	y_pos -= 8;
+	y_pos -= 20;
 }
 
 void Bullet::hide()
