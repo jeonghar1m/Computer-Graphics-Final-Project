@@ -150,10 +150,6 @@ bool Bullet::show()
 	return bShow;
 }
 
-
-
-
-
 void Bullet::active()
 {
 	bShow = true;
