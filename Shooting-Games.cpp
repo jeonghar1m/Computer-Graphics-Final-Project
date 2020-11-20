@@ -10,7 +10,8 @@
 #define SCREEN_HEIGHT 1080
 #define KEY_DOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 1 : 0)
 #define KEY_UP(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 0 : 1)
-#define ENEMY_NUM 10 
+#define ENEMY_NUM 10
+#define BULLET_NUM 5
 
 // include the Direct3D Library file
 #pragma comment (lib, "d3d9.lib")
@@ -168,7 +169,7 @@ void Bullet::hide()
 //객체 생성 
 Hero hero;
 Enemy enemy[ENEMY_NUM];
-Bullet bullet;
+Bullet bullet[BULLET_NUM];
 
 // the entry point for any Windows program
 int WINAPI WinMain(HINSTANCE hInstance,
@@ -349,8 +350,9 @@ void init_game(void)
 		enemy[i].init((float)(rand() % 300), rand() % 200 - 300);
 	}
 
-	//총알 초기화 
-	bullet.init(hero.x_pos, hero.y_pos);
+	//총알 초기화
+	for(int i=0;i<BULLET_NUM;i++)
+		bullet[i].init(hero.x_pos, hero.y_pos);
 }
 
 void do_game_logic(void)
@@ -380,29 +382,35 @@ void do_game_logic(void)
 			enemy[i].move();
 	}
 
-	//총알 처리 
-	if (bullet.show() == false)
+	//총알 처리
+	for (int i = 0; i < BULLET_NUM; i++)
 	{
-		if (KEY_DOWN(VK_SPACE))
+		if (bullet[i].show() == false)
 		{
-			bullet.active();
-			bullet.init(hero.x_pos, hero.y_pos);
+			if (KEY_DOWN(VK_SPACE))
+			{
+				bullet[i].active();
+				bullet[i].init(hero.x_pos, hero.y_pos);
+			}
 		}
 	}
 
-	if (bullet.show() == true)
+	for (int i = 0; i < BULLET_NUM; i++)
 	{
-		if (bullet.y_pos < -70)
-			bullet.hide();
-		else
-			bullet.move();
-
-		//충돌 처리 
-		for (int i = 0; i < ENEMY_NUM; i++)
+		if (bullet[i].show() == true)
 		{
-			if (bullet.check_collision(enemy[i].x_pos, enemy[i].y_pos) == true)
+			if (bullet[i].y_pos < -70)
+				bullet[i].hide();
+			else
+				bullet[i].move();
+
+			//충돌 처리 
+			for (int j = 0; j < ENEMY_NUM; j++)
 			{
-				enemy[i].init((float)(rand() % 300), rand() % 200 - 300);
+				if (bullet[i].check_collision(enemy[j].x_pos, enemy[j].y_pos) == true)
+				{
+					enemy[j].init((float)(rand() % 300), rand() % 200 - 300);
+				}
 			}
 		}
 	}
@@ -454,13 +462,16 @@ void render_frame(void)
 	d3dspt->Draw(sprite_hero, &part, &center, &position, D3DCOLOR_ARGB(255, 255, 255, 255));
 
 	//총알 
-	if (bullet.bShow == true)
+	for (int i = 0; i < BULLET_NUM; i++)
 	{
-		RECT part1;
-		SetRect(&part1, 0, 0, 64, 64);
-		D3DXVECTOR3 center1(0.0f, 0.0f, 0.0f);    // center at the upper-left corner
-		D3DXVECTOR3 position1(bullet.x_pos, bullet.y_pos, 0.0f);    // position at 50, 50 with no depth
-		d3dspt->Draw(sprite_bullet, &part1, &center1, &position1, D3DCOLOR_ARGB(255, 255, 255, 255));
+		if (bullet[i].bShow == true)
+		{
+			RECT part1;
+			SetRect(&part1, 0, 0, 64, 64);
+			D3DXVECTOR3 center1(0.0f, 0.0f, 0.0f);    // center at the upper-left corner
+			D3DXVECTOR3 position1(bullet[i].x_pos, bullet[i].y_pos, 0.0f);    // position at 50, 50 with no depth
+			d3dspt->Draw(sprite_bullet, &part1, &center1, &position1, D3DCOLOR_ARGB(255, 255, 255, 255));
+		}
 	}
 	
 	//에네미 
