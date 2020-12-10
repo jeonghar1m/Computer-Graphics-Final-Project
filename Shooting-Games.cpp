@@ -360,6 +360,8 @@ void do_game_logic(void)
 	//주인공 처리 
 	if (KEY_DOWN(VK_SHIFT))	//DASH
 		speed = 10;
+	else if (KEY_UP(VK_SHIFT))
+		speed = 3;
 
 	if (KEY_DOWN(VK_UP) && hero.y_pos >= 0)
 		hero.move(MOVE_UP);
