@@ -342,12 +342,12 @@ void initD3D(HWND hWnd)
 void init_game(void)
 {
 	//객체 초기화 
-	hero.init(150, 300);
+	hero.init(900, 300);
 
 	//적들 초기화 
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
-		enemy[i].init((float)(rand() % 300), rand() % 200 - 300);
+		enemy[i].init((float)(rand() % 1850), rand() % 200 - 300);
 	}
 
 	//총알 초기화
@@ -378,7 +378,7 @@ void do_game_logic(void)
 	//적들 처리 
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
-		if (enemy[i].y_pos > 500)
+		if (enemy[i].y_pos > 1000)
 			enemy[i].init((float)(rand() % 300), rand() % 200 - 300);
 		else
 			enemy[i].move();
@@ -411,7 +411,7 @@ void do_game_logic(void)
 			{
 				if (bullet[i].check_collision(enemy[j].x_pos, enemy[j].y_pos) == true)
 				{
-					enemy[j].init((float)(rand() % 300), rand() % 200 - 300);
+					enemy[j].init((float)(rand() % 1920), rand() % 200 - 300);
 				}
 			}
 		}
