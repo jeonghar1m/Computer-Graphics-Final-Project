@@ -11,7 +11,7 @@
 #define KEY_DOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 1 : 0)
 #define KEY_UP(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 0 : 1)
 #define ENEMY_NUM 10
-#define BULLET_NUM 5
+#define BULLET_NUM 30
 
 // include the Direct3D Library file
 #pragma comment (lib, "d3d9.lib")
@@ -426,35 +426,6 @@ void render_frame(void)
 	d3ddev->BeginScene();    // begins the 3D scene
 	d3dspt->Begin(D3DXSPRITE_ALPHABLEND);    // // begin sprite drawing with transparency
 
-	//UI 창 렌더링 
-
-	/*
-
-	static int frame = 21;    // start the program on the final frame
-
-	if(KEY_DOWN(VK_SPACE)) frame=0;     // when the space key is pressed, start at frame 0
-
-	if(frame < 21) frame++;     // if we aren't on the last frame, go to the next frame
-
-
-
-	// calculate the x-position
-
-	int xpos = frame * 182 + 1;
-
-
-
-	RECT part;
-
-	SetRect(&part, xpos, 0, xpos + 181, 128);
-
-	D3DXVECTOR3 center(0.0f, 0.0f, 0.0f);    // center at the upper-left corner
-
-	D3DXVECTOR3 position(150.0f, 50.0f, 0.0f);    // position at 50, 50 with no depth
-
-	d3dspt->Draw(sprite, &part, &center, &position, D3DCOLOR_ARGB(127, 255, 255, 255));
-
-	*/
 
 	//주인공 
 	RECT part;
